@@ -1,0 +1,1 @@
+cmd_/home/mygodimatomato/Linux_Kernel/HW/HW2/hello.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/mygodimatomato/Linux_Kernel/HW/HW2/hello.ko /home/mygodimatomato/Linux_Kernel/HW/HW2/hello.o /home/mygodimatomato/Linux_Kernel/HW/HW2/hello.mod.o
