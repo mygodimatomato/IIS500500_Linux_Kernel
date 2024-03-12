@@ -1,0 +1,1 @@
+cmd_/home/mygodimatomato/Linux_Kernel/HW/HW3/my_process.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/mygodimatomato/Linux_Kernel/HW/HW3/my_process.ko /home/mygodimatomato/Linux_Kernel/HW/HW3/my_process.o /home/mygodimatomato/Linux_Kernel/HW/HW3/my_process.mod.o
