@@ -15,8 +15,9 @@ static int process_init(void)
 {
         printk(KERN_INFO "%s","LOADING MODULE\n");
         for_each_process( task ){  // for_each_process() MACRO for iterating through each task in the os located in linux/sched/signal.h
-                const struct cred *cred = get_task_cred(task); // get the credentials of the task
-                printk(KERN_INFO "PARENT PID: %d, UID: %d, PROCESS: %s\n",task->pid, cred->uid.val, task->comm); // log parent id/executable name/state
+                const struct cred *cred = get_cred(task->cred); // get the credentials of the task
+                uid_t uid = __kuid_val(cred->uid);
+                printk(KERN_INFO "PARENT PID: %d, UID: %d, PROCESS: %s\n",task->pid, uid.val, task->comm); // log parent id/executable name/state
                 // list_for_each(list, &task->children){    //list_for_each MACRO to iterate through task->children
                 //         task_child = list_entry( list, struct task_struct, sibling );    //using list_entry to declare all vars in task_child struct
                 //         printk(KERN_INFO "\tCHILD OF %s[%d] PID: %d PROCESS: %s STATE: %ld\n",task->comm, task->pid, //log child of and child pid/nam
