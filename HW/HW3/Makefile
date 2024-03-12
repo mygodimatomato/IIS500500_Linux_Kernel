@@ -20,6 +20,6 @@ clean:
  
 else
 	# called from kernel build system: just declare what our modules are
-	obj-m := process.o
+	obj-m := process1.o
 	
 endif
