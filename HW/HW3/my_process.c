@@ -19,7 +19,7 @@ static int process_init(void)
                 //         task_child = list_entry( list, struct task_struct, sibling );    //using list_entry to declare all vars in task_child struct
                 //         printk(KERN_INFO "\tCHILD OF %s[%d] PID: %d PROCESS: %s STATE: %ld\n",task->comm, task->pid, //log child of and child pid/nam
                 //                       task_child->pid, task_child->comm, task_child->state);
-                }
+                // }
               printk("-----------------------------------------------------\n");
         }
  
