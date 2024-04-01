@@ -1,5 +1,3 @@
-[Tue Mar 12 17:23:26 2024] audit: type=1400 audit(1710235493.359:734): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9305 comm="nm-dhcp-client." lport=41718 family="inet" sock_type="dgram" protocol=17
-[Tue Mar 12 17:23:26 2024] audit: type=1400 audit(1710235493.359:735): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9305 comm="nm-dhcp-client." lport=37345 family="inet6" sock_type="dgram" protocol=17
 [Tue Mar 12 17:23:29 2024] LOADING MODULE
 [Tue Mar 12 17:23:29 2024] PID: 1, UID: 0, PROCESS: init
 [Tue Mar 12 17:23:29 2024] PID: 2, UID: 0, PROCESS: kthreadd
@@ -236,9 +234,3 @@
 [Tue Mar 12 17:23:29 2024] PID: 9310, UID: 0, PROCESS: sudo
 [Tue Mar 12 17:23:29 2024] PID: 9311, UID: 0, PROCESS: insmod
 [Tue Mar 12 17:23:29 2024] PID: 9312, UID: 0, PROCESS: systemd-udevd
-[Tue Mar 12 17:27:20 2024] audit: type=1400 audit(1710235727.947:736): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9335 comm="nm-dhcp-client." lport=41718 family="inet" sock_type="dgram" protocol=17
-[Tue Mar 12 17:27:20 2024] audit: type=1400 audit(1710235727.947:737): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9335 comm="nm-dhcp-client." lport=37345 family="inet6" sock_type="dgram" protocol=17
-[Tue Mar 12 17:31:44 2024] audit: type=1400 audit(1710235991.987:738): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9340 comm="nm-dhcp-client." lport=41718 family="inet" sock_type="dgram" protocol=17
-[Tue Mar 12 17:31:44 2024] audit: type=1400 audit(1710235991.987:739): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9340 comm="nm-dhcp-client." lport=37345 family="inet6" sock_type="dgram" protocol=17
-[Tue Mar 12 17:35:45 2024] audit: type=1400 audit(1710236232.727:740): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9544 comm="nm-dhcp-client." lport=41718 family="inet" sock_type="dgram" protocol=17
-[Tue Mar 12 17:35:45 2024] audit: type=1400 audit(1710236232.727:741): apparmor="DENIED" operation="file_inherit" profile="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=9544 comm="nm-dhcp-client." lport=37345 family="inet6" sock_type="dgram" protocol=17
