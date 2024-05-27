@@ -5,14 +5,14 @@
 #include <linux/fs.h>           /* This is where libfs stuff is declared */
 #include <asm/atomic.h>
 #include <asm/uaccess.h>        /* copy_to_user */
- 
+
 
 MODULE_LICENSE("GPL");
 
 #define MYFS_MAGIC 0x20210607
-#define TMPSIZE 20
 
-static atomic_t a, b;
+static atomic_t a_value;
+static atomic_t b_value;
 
 static struct inode *myfs_make_inode(struct super_block *sb, int mode)
 {
@@ -36,29 +36,26 @@ static int myfs_open(struct inode *inode, struct file *filp)
     return 0;
 }
 
+#define TMPSIZE 20
 
-static ssize_t myfs_read_file(struct file *filp, char *buf,
-                size_t count, loff_t *offset)
+static ssize_t myfs_read_file(struct file *filp, char *buf, 
+size_t count, loff_t *offset)
 {
-        atomic_t *counter = (atomic_t *) filp->private_data;
-        int v, len;
-        char tmp[TMPSIZE];
- 
-        v = atomic_read(counter);
-        if (*offset > 0)
-                v -= 1;  /* the value returned when offset was zero */
-        else
-                atomic_inc(counter);
-        len = snprintf(tmp, TMPSIZE, "%d\n", v);
-        if (*offset > len)
-                return 0;
-        if (count > len - *offset)
-                count = len - *offset;
- 
-        if (copy_to_user(buf, tmp + *offset, count))
-                return -EFAULT;
-        *offset += count;
-        return count;
+    atomic_t *counter = (atomic_t *) filp->private_data;
+    int v, len;
+    char tmp[TMPSIZE];
+
+    v = atomic_read(counter);
+    len = snprintf(tmp, TMPSIZE, "%d\n", v);
+    if (*offset > len)
+        return 0;
+    if (count > len - *offset)
+        count = len - *offset;
+
+    if (copy_to_user(buf, tmp + *offset, count))
+        return -EFAULT;
+    *offset += count;
+    return count;
 }
 
 static ssize_t myfs_write_file(struct file *filp, const char *buf,
@@ -82,13 +79,13 @@ static ssize_t myfs_write_file(struct file *filp, const char *buf,
 
 static ssize_t myfs_read_add(struct file *filp, char *buf, size_t count, loff_t *offset)
 {
-    int a_val = atomic_read(&a);
-    int b_val = atomic_read(&b);
-    int sum = a_val + b_val;
+    int a = atomic_read(&a_value);
+    int b = atomic_read(&b_value);
+    int result = a + b;
     char tmp[TMPSIZE];
     int len;
 
-    len = snprintf(tmp, TMPSIZE, "%d\n", sum);
+    len = snprintf(tmp, TMPSIZE, "%d\n", result);
     if (*offset > len)
         return 0;
     if (count > len - *offset)
@@ -102,13 +99,13 @@ static ssize_t myfs_read_add(struct file *filp, char *buf, size_t count, loff_t 
 
 static ssize_t myfs_read_sub(struct file *filp, char *buf, size_t count, loff_t *offset)
 {
-    int a_val = atomic_read(&a);
-    int b_val = atomic_read(&b);
-    int diff = a_val - b_val;
+    int a = atomic_read(&a_value);
+    int b = atomic_read(&b_value);
+    int result = a - b;
     char tmp[TMPSIZE];
     int len;
 
-    len = snprintf(tmp, TMPSIZE, "%d\n", diff);
+    len = snprintf(tmp, TMPSIZE, "%d\n", result);
     if (*offset > len)
         return 0;
     if (count > len - *offset)
@@ -137,8 +134,8 @@ static struct file_operations myfs_sub_ops = {
 };
 
 static struct dentry *myfs_create_file (struct super_block *sb,
- struct dentry *dir, const char *name, 
- tomic_t *counter, struct file_operations *fops)
+       struct dentry *dir, const char *name,
+        atomic_t *counter, struct file_operations *fops)
 {
     struct dentry *dentry;
     struct inode *inode;
@@ -165,8 +162,8 @@ out_dput:
 out:
     return 0;
 }
-static struct dentry *myfs_create_dir (struct super_block *sb, 
-struct dentry *parent, const char *name)
+static struct dentry *myfs_create_dir (struct super_block *sb,
+  struct dentry *parent, const char *name)
 {
     struct dentry *dentry;
     struct inode *inode;
@@ -194,18 +191,17 @@ out:
     return 0;
 }
 
-
 static void myfs_create_files (struct super_block *sb, struct dentry *root)
 {
     struct dentry *input_dir, *output_dir;
 
-    atomic_set(&a, 0);
-    atomic_set(&b, 0);
+    atomic_set(&a_value, 0);
+    atomic_set(&b_value, 0);
 
     input_dir = myfs_create_dir(sb, root, "input");
     if (input_dir) {
-        myfs_create_file(sb, input_dir, "a", &a, &myfs_file_ops);
-        myfs_create_file(sb, input_dir, "b", &b, &myfs_file_ops);
+        myfs_create_file(sb, input_dir, "a", &a_value, &myfs_file_ops);
+        myfs_create_file(sb, input_dir, "b", &b_value, &myfs_file_ops);
     }
 
     output_dir = myfs_create_dir(sb, root, "output");
@@ -250,8 +246,8 @@ out:
     return -ENOMEM;
 }
 
-static struct dentry *myfs_get_super(struct file_system_type *fst, 
-int flags, const char *devname, void *data)
+static struct dentry *myfs_get_super(struct file_system_type *fst,
+ int flags, const char *devname, void *data)
 {
     return mount_nodev(fst, flags, data,myfs_fill_super);
 }
