@@ -45,11 +45,8 @@ static ssize_t myfs_read_file(struct file *filp, char *buf,
         char tmp[TMPSIZE];
  
         v = atomic_read(counter);
-        if (*offset > 0)
-                v -= 1;  /* the value returned when offset was zero */
-        else
-                atomic_inc(counter);
         len = snprintf(tmp, TMPSIZE, "%d\n", v);
+
         if (*offset > len)
                 return 0;
         if (count > len - *offset)
@@ -138,7 +135,7 @@ static struct file_operations myfs_sub_ops = {
 
 static struct dentry *myfs_create_file (struct super_block *sb,
  struct dentry *dir, const char *name, 
- tomic_t *counter, struct file_operations *fops)
+ atomic_t *counter, struct file_operations *fops)
 {
     struct dentry *dentry;
     struct inode *inode;
